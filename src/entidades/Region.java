@@ -9,14 +9,6 @@ public class Region {
     private int poblacion;
     private List<Ciudad> ciudades;
 
-    public Region(String codigo, String nombre, int area, int poblacion, List<Ciudad> ciudades) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.area = area;
-        this.poblacion = poblacion;
-        this.ciudades = ciudades;
-    }
-
     public String getCodigo() {
         return codigo;
     }

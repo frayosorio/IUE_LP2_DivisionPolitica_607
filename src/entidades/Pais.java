@@ -10,17 +10,7 @@ public class Pais {
     private String codigoAlfa2;
     private String codigoAlfa3;
     private List<Region> regiones;
-    
-    public Pais(int id, String nombre, String continente, String tipoRegion, String codigoAlfa2, String codigoAlfa3,
-            List<Region> regiones) {
-        this.id = id;
-        this.nombre = nombre;
-        this.continente = continente;
-        this.tipoRegion = tipoRegion;
-        this.codigoAlfa2 = codigoAlfa2;
-        this.codigoAlfa3 = codigoAlfa3;
-        this.regiones = regiones;
-    }
+
 
     public int getId() {
         return id;

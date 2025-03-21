@@ -6,13 +6,6 @@ public class Ciudad {
     private boolean capitalRegion;
     private boolean capitalPais;
 
-    public Ciudad(String codigo, String nombre, boolean capitalRegion, boolean capitalPais) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.capitalRegion = capitalRegion;
-        this.capitalPais = capitalPais;
-    }
-
     public String getCodigo() {
         return codigo;
     }

@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -15,6 +18,10 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import entidades.Pais;
 
 public class FrmDivisionPolitica extends JFrame {
 
@@ -68,7 +75,28 @@ public class FrmDivisionPolitica extends JFrame {
         cargarDatos();
     }
 
+    private List<Pais> paises;
+
     private void cargarDatos() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String nombreArchivo = System.getProperty("user.dir") + "/src/datos/DivisionPolitica.json";
+
+        // Cargar datos desde el archivo JSON
+        try {
+            paises = objectMapper.readValue(new File(nombreArchivo),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, Pais.class));
+
+            if (paises != null) {
+                for (Pais pais : paises) {
+                    DefaultMutableTreeNode nodoPais=new DefaultMutableTreeNode(pais.getNombre());
+
+                    nodoRaiz.add(nodoPais);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se pudieron cargar los datos: " + ex);
+        }
 
     }
 
