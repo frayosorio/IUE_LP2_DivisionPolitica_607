@@ -21,7 +21,9 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import entidades.Ciudad;
 import entidades.Pais;
+import entidades.Region;
 
 public class FrmDivisionPolitica extends JFrame {
 
@@ -89,8 +91,19 @@ public class FrmDivisionPolitica extends JFrame {
 
             if (paises != null) {
                 for (Pais pais : paises) {
-                    DefaultMutableTreeNode nodoPais=new DefaultMutableTreeNode(pais.getNombre());
-
+                    DefaultMutableTreeNode nodoPais = new DefaultMutableTreeNode(pais.getNombre());
+                    if (pais.getRegiones() != null) {
+                        for (Region region : pais.getRegiones()) {
+                            DefaultMutableTreeNode nodoRegion = new DefaultMutableTreeNode(region.getNombre());
+                            if (region.getCiudades() != null) {
+                                for (Ciudad ciudad : region.getCiudades()) {
+                                    DefaultMutableTreeNode nodoCiudad = new DefaultMutableTreeNode(ciudad.getNombre());
+                                    nodoRegion.add(nodoCiudad);
+                                }
+                            }
+                            nodoPais.add(nodoRegion);
+                        }
+                    }
                     nodoRaiz.add(nodoPais);
                 }
             }
@@ -100,7 +113,35 @@ public class FrmDivisionPolitica extends JFrame {
 
     }
 
+    private String getNombrePais() {
+        DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
+        while (nodo != null) {
+            if (nodo.getParent() == nodoRaiz) {
+                return nodo.toString()
+                .replace("á","a")
+                .replace("é","e")
+                .replace("í","i")
+                .replace("ó","o")
+                .replace("ú","u")
+                .replace("ü","u");
+            }
+            nodo = (DefaultMutableTreeNode) nodo.getParent();
+        }
+        return "";
+    }
+
     private void mostrarMapa() {
+        String nombrePais = getNombrePais();
+        if (!nombrePais.equals("")) {
+            String ruta = "src/mapas/" + nombrePais + ".jpg";
+            File archivoMapa = new File(ruta);
+            if (archivoMapa.exists()) {
+                lblMapa.setIcon(new ImageIcon(ruta));
+            } else {
+                lblMapa.setIcon(null);
+            }
+
+        }
 
     }
 
