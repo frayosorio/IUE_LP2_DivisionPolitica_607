@@ -38,15 +38,15 @@ public class FrmDivisionPolitica extends JFrame {
 
         JToolBar tbDivisionPolitica = new JToolBar();
 
-        JButton btnAgregarCuenta = new JButton();
-        btnAgregarCuenta.setIcon(new ImageIcon(getClass().getResource("/iconos/Himno.png")));
-        btnAgregarCuenta.setToolTipText("Reproducir Himno");
-        btnAgregarCuenta.addActionListener(new ActionListener() {
+        JButton btnHimno = new JButton();
+        btnHimno.setIcon(new ImageIcon(getClass().getResource("/iconos/Himno.png")));
+        btnHimno.setToolTipText("Reproducir Himno");
+        btnHimno.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 reproducirHimno();
             }
         });
-        tbDivisionPolitica.add(btnAgregarCuenta);
+        tbDivisionPolitica.add(btnHimno);
 
         // Crear el nodo raíz del árbol
         nodoRaiz = new DefaultMutableTreeNode("Paises");
@@ -118,12 +118,12 @@ public class FrmDivisionPolitica extends JFrame {
         while (nodo != null) {
             if (nodo.getParent() == nodoRaiz) {
                 return nodo.toString()
-                .replace("á","a")
-                .replace("é","e")
-                .replace("í","i")
-                .replace("ó","o")
-                .replace("ú","u")
-                .replace("ü","u");
+                        .replace("á", "a")
+                        .replace("é", "e")
+                        .replace("í", "i")
+                        .replace("ó", "o")
+                        .replace("ú", "u")
+                        .replace("ü", "u");
             }
             nodo = (DefaultMutableTreeNode) nodo.getParent();
         }
@@ -145,8 +145,23 @@ public class FrmDivisionPolitica extends JFrame {
 
     }
 
-    private void reproducirHimno() {
+    private boolean reproduciendo = false;
 
+    private void reproducirHimno() {
+        if (!reproduciendo) {
+            String nombrePais = getNombrePais();
+            if (!nombrePais.equals("")) {
+                String nombreArchivo = "src/himnos/" + nombrePais + ".mp3";
+                File archivoHimno = new File(nombreArchivo);
+                if (archivoHimno.exists()) {
+                    reproduciendo = true;
+                    ReproductorAudio.reproducir(nombreArchivo);
+                }
+            }
+        } else {
+            ReproductorAudio.detener();
+            reproduciendo = false;
+        }
     }
 
 }
